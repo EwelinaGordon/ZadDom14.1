@@ -14,40 +14,55 @@ public class CalcMeterServlet extends HttpServlet {
         String milimeter = request.getParameter("milimetry");
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html");
-        PrintWriter writer = response.getWriter();
 
+        boolean isValid = CheckParam.checkParameters(meter, centimeter, milimeter);
+
+
+        if (isValid) {
+            printResultMeter(response, meter, centimeter, milimeter);
+        } else {
+            PrintWriter writer = response.getWriter();
+            writer.println("Podaj wybrany parametr");
+            writer.println("</br>");
+            writer.println("<a href = http://localhost:8080> Wróć do kalkulatora </a>");
+        }
+    }
+
+    private void printResultMeter(HttpServletResponse response, String meter, String centimeter, String milimeter) throws IOException {
+        PrintWriter writer = response.getWriter();
         writer.println("<html><body><h3>");
         writer.println("Podana wartość w przeliczeniu na: ");
-        writer.println("<br>");
+        writer.println("</br>");
         if (meter != "") {
             writer.println("metry: " + Double.parseDouble(meter));
-            writer.println("<br>");
-            writer.println("centymetry: " + Double.parseDouble(meter) *100);
-            writer.println("<br>");
+            writer.println("</br>");
+            writer.println("centymetry: " + Double.parseDouble(meter) * 100);
+            writer.println("</br>");
             writer.println("milimetry: " + Double.parseDouble(meter) * 1000);
-        }
-        else if (centimeter != ""){
-            writer.println("metry: " + Double.parseDouble(centimeter)/100);
-            writer.println("<br>");
+        } else if (centimeter != "") {
+            writer.println("metry: " + Double.parseDouble(centimeter) / 100);
+            writer.println("</br>");
             writer.println("centymetry: " + Double.parseDouble(centimeter));
-            writer.println("<br>");
+            writer.println("</br>");
             writer.println("milimetry: " + Double.parseDouble(centimeter) * 10);
-        }
-        else if (milimeter != ""){
-            writer.println("metry: " + Double.parseDouble(milimeter)/1000);
-            writer.println("<br>");
-            writer.println("centymetry: " + Double.parseDouble(milimeter)/10);
-            writer.println("<br>");
+        } else if (milimeter != "") {
+            writer.println("metry: " + Double.parseDouble(milimeter) / 1000);
+            writer.println("</br>");
+            writer.println("centymetry: " + Double.parseDouble(milimeter) / 10);
+            writer.println("</br>");
             writer.println("milimetry: " + Integer.parseInt(milimeter));
-        }
-        else writer.println("Podaj miarę do przeliczenia");
+        } else writer.println("Podaj miarę do przeliczenia");
 
         writer.println("<h3><body><html>");
-        }
+    }
+
+
 
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter writer = response.getWriter();
         writer.println("Ten servlet nie obsługuje metody doGet");
     }
+
+
 }

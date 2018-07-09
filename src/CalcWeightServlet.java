@@ -14,33 +14,44 @@ public class CalcWeightServlet extends HttpServlet {
         String miligramy = request.getParameter("miligramy");
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html");
-        PrintWriter writer = response.getWriter();
 
+        boolean isValid = CheckParam.checkParameters(kilogramy, gramy, miligramy);
+
+
+        if (isValid) {
+            printResultWeight(response, kilogramy, gramy, miligramy);
+        } else {
+            PrintWriter writer = response.getWriter();
+            writer.println("Podaj wybrany parametr");
+            writer.println("</br>");
+            writer.println("<a href = http://localhost:8080> Wróć do kalkulatora </a>");
+        }
+    }
+
+    private void printResultWeight(HttpServletResponse response, String kilogramy, String gramy, String miligramy) throws IOException {
+        PrintWriter writer = response.getWriter();
         writer.println("<html><body><h3>");
         writer.println("Podana wartość w przeliczeniu na: ");
-        writer.println("<br>");
+        writer.println("</br>");
         if (kilogramy != "") {
             writer.println("kilogramy: " + Double.parseDouble(kilogramy));
-            writer.println("<br>");
-            writer.println("gramy: " + Double.parseDouble(kilogramy) *100);
-            writer.println("<br>");
+            writer.println("</br>");
+            writer.println("gramy: " + Double.parseDouble(kilogramy) * 100);
+            writer.println("</br>");
             writer.println("miligramy: " + Double.parseDouble(kilogramy) * 1000);
-        }
-        else if (gramy != ""){
-            writer.println("kilo: " + Double.parseDouble(gramy)/100);
-            writer.println("<br>");
+        } else if (gramy != "") {
+            writer.println("kilo: " + Double.parseDouble(gramy) / 100);
+            writer.println("</br>");
             writer.println("gramy: " + Double.parseDouble(gramy));
-            writer.println("<br>");
+            writer.println("</br>");
             writer.println("miligramy: " + Double.parseDouble(gramy) * 10);
-        }
-        else if (miligramy != ""){
-            writer.println("kilogramy: " + Double.parseDouble(miligramy)/1000);
-            writer.println("<br>");
-            writer.println("miligramy: " + Double.parseDouble(miligramy)/10);
-            writer.println("<br>");
+        } else if (miligramy != "") {
+            writer.println("kilogramy: " + Double.parseDouble(miligramy) / 1000);
+            writer.println("</br>");
+            writer.println("miligramy: " + Double.parseDouble(miligramy) / 10);
+            writer.println("</br>");
             writer.println("gramy: " + Integer.parseInt(miligramy));
-        }
-        else writer.println("Podaj miarę do przeliczenia");
+        } else writer.println("Podaj miarę do przeliczenia");
 
         writer.println("<h3><body><html>");
     }
